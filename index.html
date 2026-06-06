@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="icon" href="logo.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-spinner"></div>
+        <p>Loading Library Management System...</p>
+    </div>
+
+    <!-- Main Application Container -->
+    <div id="app" class="app-container" style="display: none;">
+        
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <button id="sidebarToggle" class="sidebar-toggle" aria-label="Toggle Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <h1 class="app-title" data-translate="app_title">Library Management System</h1>
+            </div>
+            
+            <div class="header-center">
+                <!-- FIXED: Search Bar -->
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        id="globalSearch" 
+                        class="search-input" 
+                        placeholder="Search books, members, or transactions..."
+                        data-translate="search_placeholder"
+                    >
+                    <button class="search-btn" id="searchBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <!-- FIXED: Quick Add Button -->
+                <button id="quickAddBtn" class="btn btn-primary quick-add-btn" data-translate="quick_add">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Quick Add
+                </button>
+                
+                <!-- FIXED: Language Switcher -->
+                <div class="language-switcher">
+                    <select id="languageSelect" class="language-select">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी</option>
+                    </select>
+                </div>
+                
+                <div class="user-menu">
+                    <button class="user-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Search Results Dropdown -->
+        <div id="searchResults" class="search-results" style="display: none;"></div>
+
+        <div class="app-body">
+            <!-- Sidebar Navigation -->
+            <aside id="sidebar" class="sidebar">
+                <nav class="sidebar-nav">
+                    <a href="#dashboard" class="nav-item active" data-page="dashboard" data-translate="dashboard">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <span>Dashboard</span>
+                    </a>
+                    
+                    <a href="#books" class="nav-item" data-page="books" data-translate="books">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                        <span>Books</span>
+                    </a>
+                    
+                    <a href="#members" class="nav-item" data-page="members" data-translate="members">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span>Members</span>
+                    </a>
+                    
+                    <a href="#circulation" class="nav-item" data-page="circulation" data-translate="circulation">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <polyline points="23 4 23 10 17 10"></polyline>
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                        </svg>
+                        <span>Circulation</span>
+                    </a>
+                    
+                    <a href="#fines" class="nav-item" data-page="fines" data-translate="fines">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        <span>Fines</span>
+                    </a>
+                    
+                    <a href="#reservations" class="nav-item" data-page="reservations" data-translate="reservations">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        <span>Reservations</span>
+                    </a>
+                    
+                    <a href="#reports" class="nav-item" data-page="reports" data-translate="reports">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <span>Reports</span>
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main id="content" class="main-content">
+                <div class="loading-spinner">Loading...</div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    
+    <!-- Add/Edit Book Modal -->
+    <div id="bookModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="bookModalTitle">Add New Book</h2>
+                <button class="modal-close" data-modal="bookModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="bookForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bookIsbn">ISBN *</label>
+                            <input type="text" id="bookIsbn" name="isbn" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookTitle">Book Title *</label>
+                            <input type="text" id="bookTitle" name="book_title" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bookAuthor">Author *</label>
+                            <input type="text" id="bookAuthor" name="author" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookPublisher">Publisher</label>
+                            <input type="text" id="bookPublisher" name="publisher">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bookCategory">Category *</label>
+                            <select id="bookCategory" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="Fiction">Fiction</option>
+                                <option value="Non-Fiction">Non-Fiction</option>
+                                <option value="Science">Science</option>
+                                <option value="Technology">Technology</option>
+                                <option value="History">History</option>
+                                <option value="Biography">Biography</option>
+                                <option value="Fantasy">Fantasy</option>
+                                <option value="Mystery">Mystery</option>
+                                <option value="Romance">Romance</option>
+                                <option value="Thriller">Thriller</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookLanguage">Language</label>
+                            <select id="bookLanguage" name="language">
+                                <option value="English">English</option>
+                                <option value="Hindi">Hindi</option>
+                                <option value="Spanish">Spanish</option>
+                                <option value="French">French</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bookYear">Publication Year</label>
+                            <input type="number" id="bookYear" name="publication_year" min="1900" max="2025">
+                        </div>
+                        <div class="form-group">
+                            <label for="bookPages">Pages</label>
+                            <input type="number" id="bookPages" name="pages" min="1">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bookCopies">Total Copies</label>
+                            <input type="number" id="bookCopies" name="total_copies" min="1" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="bookAvailable">Available Copies</label>
+                            <input type="number" id="bookAvailable" name="available_copies" min="0" value="1">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bookPrice">Price ($)</label>
+                            <input type="number" id="bookPrice" name="price" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="bookLocation">Location</label>
+                            <input type="text" id="bookLocation" name="location" placeholder="e.g., A-101">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bookDescription">Description</label>
+                        <textarea id="bookDescription" name="description" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-modal="bookModal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Book</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Member Modal -->
+    <div id="memberModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="memberModalTitle">Add New Member</h2>
+                <button class="modal-close" data-modal="memberModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="memberForm">
+                    <div class="form-group">
+                        <label for="memberName">Full Name *</label>
+                        <input type="text" id="memberName" name="member_name" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="memberEmail">Email</label>
+                            <input type="email" id="memberEmail" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="memberPhone">Phone Number *</label>
+                            <input type="tel" id="memberPhone" name="phone_number" required pattern="[0-9]{10}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="memberAddress">Address</label>
+                        <textarea id="memberAddress" name="address" rows="2"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="memberType">Membership Type *</label>
+                        <select id="memberType" name="membership_type" required>
+                            <option value="public">Public</option>
+                            <option value="student">Student</option>
+                            <option value="faculty">Faculty</option>
+                            <option value="premium">Premium</option>
+                        </select>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-modal="memberModal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Member</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Issue Book Modal -->
+    <div id="issueModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Issue Book</h2>
+                <button class="modal-close" data-modal="issueModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="issueForm">
+                    <div class="form-group">
+                        <label for="issueMemberId">Member ID *</label>
+                        <input type="text" id="issueMemberId" name="member_id" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="issueBookIsbn">Book ISBN *</label>
+                        <input type="text" id="issueBookIsbn" name="book_isbn" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Due Date</label>
+                        <input type="text" value="14 days from today" readonly>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-modal="issueModal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Issue Book</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reservation Modal -->
+    <div id="reservationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Reservation</h2>
+                <button class="modal-close" data-modal="reservationModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="reservationForm">
+                    <div class="form-group">
+                        <label for="reserveMemberId">Member ID *</label>
+                        <input type="text" id="reserveMemberId" name="member_id" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reserveBookIsbn">Book ISBN *</label>
+                        <input type="text" id="reserveBookIsbn" name="book_isbn" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Expiry Date</label>
+                        <input type="text" value="7 days from today" readonly>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-modal="reservationModal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Reservation</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Modal -->
+    <div id="reportModal" class="modal modal-large">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="reportModalTitle">Report</h2>
+                <button class="modal-close" data-modal="reportModal">&times;</button>
+            </div>
+            <div class="modal-body" id="reportModalBody">
+                <!-- Report content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>
